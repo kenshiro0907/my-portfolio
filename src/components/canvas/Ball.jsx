@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import {
   Decal,
@@ -20,7 +20,7 @@ const Ball = (props) => {
       <mesh castShadow receiveShadow scale={2.75}>
         <icosahedronGeometry args={[1, 1]} />
         <meshStandardMaterial
-          color='#fff8eb'
+          color="#fff8eb"
           polygonOffset
           polygonOffsetFactor={-5}
           flatShading
@@ -38,9 +38,27 @@ const Ball = (props) => {
 };
 
 const BallCanvas = ({ icon }) => {
+  const [isScreenLarge, setIsScreenLarge] = useState(window.innerWidth > 500);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsScreenLarge(window.innerWidth > 500);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  if (!isScreenLarge) {
+    return null; // N'affiche rien si la taille de l'écran est inférieure ou égale à 500px
+  }
+
   return (
     <Canvas
-      frameloop='demand'
+      frameloop="demand"
       dpr={[1, 2]}
       gl={{ preserveDrawingBuffer: true }}
     >
