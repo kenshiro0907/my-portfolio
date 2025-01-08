@@ -39,14 +39,13 @@ const Tech = () => {
     };
   }, []);
 
-  // Limiter la liste des technologies à 4 si l'écran est petit
-  const displayedTechnologies = isScreenLarge
-    ? technologies
-    : technologies.slice(0, 4);
+  if (!isScreenLarge) {
+    return null; // N'affiche rien si la taille de l'écran est inférieure ou égale à 500px
+  }
 
   return (
     <div className="flex flex-row flex-wrap justify-center gap-10">
-      {displayedTechnologies.map((technology) => (
+      {technologies.map((technology) => (
         <div className="w-28 h-28" key={technology.name}>
           <BallCanvas icon={technology.icon} />
         </div>
